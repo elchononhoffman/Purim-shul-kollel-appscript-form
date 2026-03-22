@@ -1,91 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Embedded App</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Locked Form</title>
+  <!-- CSP to allow docs.google.com but block workspace.google.com -->
   <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          frame-src https://script.google.com https://*.googleusercontent.com;
-          child-src https://script.google.com https://*.googleusercontent.com;
-          connect-src 'self' https://script.google.com https://*.googleusercontent.com;
-          img-src 'self' data: https://script.google.com https://*.googleusercontent.com;
-          style-src 'self' 'unsafe-inline';
-          script-src 'self' 'unsafe-inline';
-        ">
-
+        content="default-src 'self'; frame-src https://docs.google.com; connect-src https://docs.google.com; img-src https://docs.google.com data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://docs.google.com; child-src https://docs.google.com;">
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      overscroll-behavior: none;
-      background: #fff;
+      margin:0;
+      height:100%;
+      background:#fff;
+      overflow:hidden;
     }
-
-    body {
-      position: fixed;
-      inset: 0;
-      touch-action: pan-x pan-y;
-    }
-
-    .app-wrap {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: auto;
-      background: #fff;
-    }
-
     iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      overflow: hidden;
-      background: #fff;
+      border:0;
+      width:100%;
+      height:100%;
+    }
+    /* Prevent selection, copy/paste, and callout menu */
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    body {
+      -webkit-touch-callout: none;
     }
   </style>
-
-  <script>
-    (function () {
-      let startY = 0;
-      let blockPull = false;
-
-      document.addEventListener('touchstart', function (e) {
-        if (!e.touches || e.touches.length !== 1) return;
-        startY = e.touches[0].clientY;
-        blockPull = window.scrollY <= 0;
-      }, { passive: true });
-
-      document.addEventListener('touchmove', function (e) {
-        if (!blockPull) return;
-        if (!e.touches || e.touches.length !== 1) return;
-
-        const dy = e.touches[0].clientY - startY;
-        if (dy > 0) e.preventDefault();
-      }, { passive: false });
-
-      document.addEventListener('gesturestart', function (e) {
-        e.preventDefault();
-      });
-    })();
-  </script>
 </head>
 <body>
-  <div class="app-wrap">
-    <iframe
-      src="https://script.google.com/macros/s/AKfycbw8DMxFpQ2S2MDq16DP6JUMIwwRenuH5vX-Dwmi0AuyuJ2aWNZ8mHGtqxG9nxbm42YF/exec"
-      sandbox="allow-scripts allow-same-origin allow-forms"
-      referrerpolicy="no-referrer">
-    </iframe>
-  </div>
+  <iframe
+    src="https://script.google.com/macros/s/AKfycbw8DMxFpQ2S2MDq16DP6JUMIwwRenuH5vX-Dwmi0AuyuJ2aWNZ8mHGtqxG9nxbm42YF/exec"
+    sandbox="allow-forms allow-scripts allow-same-origin"
+    referrerpolicy="no-referrer">
+  </iframe>
 </body>
 </html>
