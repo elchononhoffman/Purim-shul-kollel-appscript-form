@@ -1,15 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="he">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Locked App</title>
+
   <style>
-    html, body, iframe { margin:0; width:100%; height:100%; border:0; }
-    body { overflow:hidden; overscroll-behavior:none; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: pan-x pan-y;
+      background: #fff;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
+
+  <script>
+    (function () {
+      let startY = 0;
+      let blockPull = false;
+
+      window.addEventListener('touchstart', function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        startY = e.touches[0].clientY;
+        blockPull = (window.scrollY === 0);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', function (e) {
+        if (!blockPull) return;
+        if (!e.touches || e.touches.length !== 1) return;
+
+        const currentY = e.touches[0].clientY;
+        const deltaY = currentY - startY;
+
+        if (deltaY > 0) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+    })();
+  </script>
 </head>
 <body>
-  <iframe src="https://script.google.com/macros/s/AKfycbw8DMxFpQ2S2MDq16DP6JUMIwwRenuH5vX-Dwmi0AuyuJ2aWNZ8mHGtqxG9nxbm42YF/exec"></iframe>
+  <iframe
+    src="https://script.google.com/macros/s/AKfycbw8DMxFpQ2S2MDq16DP6JUMIwwRenuH5vX-Dwmi0AuyuJ2aWNZ8mHGtqxG9nxbm42YF/exec"
+    referrerpolicy="no-referrer">
+  </iframe>
 </body>
 </html>
