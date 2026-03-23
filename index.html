@@ -1,40 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="he">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Locked Form</title>
-  <!-- CSP to allow docs.google.com but block workspace.google.com -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; frame-src https://docs.google.com; connect-src https://docs.google.com; img-src https://docs.google.com data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://docs.google.com; child-src https://docs.google.com;">
+  <title>Locked App</title>
+
   <style>
     html, body {
-      margin:0;
-      height:100%;
-      background:#fff;
-      overflow:hidden;
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
     }
+
     iframe {
-      border:0;
-      width:100%;
-      height:100%;
-    }
-    /* Prevent selection, copy/paste, and callout menu */
-    * {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    body {
-      -webkit-touch-callout: none;
+      border: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
     }
   </style>
+
+  <script>
+    (function () {
+      let startY = 0;
+      let maybePull = false;
+
+      window.addEventListener('touchstart', function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        startY = e.touches[0].clientY;
+        maybePull = (window.scrollY === 0);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', function (e) {
+        if (!maybePull) return;
+        if (!e.touches || e.touches.length !== 1) return;
+
+        const y = e.touches[0].clientY;
+        const dy = y - startY;
+
+        if (dy > 0) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+    })();
+  </script>
 </head>
+
 <body>
   <iframe
     src="https://script.google.com/macros/s/AKfycbw8DMxFpQ2S2MDq16DP6JUMIwwRenuH5vX-Dwmi0AuyuJ2aWNZ8mHGtqxG9nxbm42YF/exec"
-    sandbox="allow-forms allow-scripts allow-same-origin"
+    sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation-by-user-activation"
     referrerpolicy="no-referrer">
   </iframe>
 </body>
